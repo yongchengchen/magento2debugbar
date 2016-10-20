@@ -28,15 +28,15 @@ class AppLaunch {
 		}
 	}
 	public function aroundcatchException(...$args) {
-		// if (Stand::getInstance()->debugBarEnabled() && class_exists('\Whoops\Run')) {
+		if (Stand::getInstance()->debugBarEnabled(true) && class_exists('\Whoops\Run')) {
 			$e = $args[3];
 			$whoops = new \Whoops\Run;
 		    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 		    $whoops->handleException($e);
 		    return true;
-		// } else {
-		// 	return $args[0]->___callParent('catchException', [$args[2], $args[3]]);
-		// }
+		} else {
+			return $args[0]->___callParent('catchException', [$args[2], $args[3]]);
+		}
 		return false;
 	}
 }
