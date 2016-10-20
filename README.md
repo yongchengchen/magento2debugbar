@@ -49,7 +49,10 @@ After updating composer, add 'phpdebugbar' configuration to app/etc/env.php
   )
 ```
 
-and then run bin/magento module:enable Yong_Magento2DebugBar
+and then run 
+```shell
+bin/magento module:enable Yong_Magento2DebugBar
+```
 
 ## Usage
 Enable/Disable: go to file app/etc/env.php, set 'enabled' of array phpdebugbar as 0 for disable, 1 for enable(but still need cookie pair check)
