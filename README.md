@@ -1,5 +1,10 @@
 ## Magento2 Debugbar
 
+[![Total Downloads](https://poser.pugx.org/yong/magento2debugbar/d/total.svg)](https://packagist.org/packages/yong/magento2debugbar)
+[![Latest Stable Version](https://poser.pugx.org/yong/magento2debugbar/v/stable.svg)](https://packagist.org/packages/yong/magento2debugbar)
+[![Latest Unstable Version](https://poser.pugx.org/yong/magento2debugbar/v/unstable.svg)](https://packagist.org/packages/yong/magento2debugbar)
+[![License](https://poser.pugx.org/yong/magento2debugbar/license.svg)](https://packagist.org/packages/yong/magento2debugbar)
+
 This is a package to integrate [PHP Debug Bar](http://phpdebugbar.com/) with Magento 2.
 
 It lightly dynamic inject and collect debug info for Magento2 for development/production mode. 
