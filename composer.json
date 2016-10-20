@@ -22,7 +22,6 @@
             "Yong\\Magento2DebugBar\\": ""
         }
     },
-    "target-dir": "Yong/Magento2DebugBar",
     "extra": {
         "branch-alias": {
             "dev-master": "2.0.0-dev"
