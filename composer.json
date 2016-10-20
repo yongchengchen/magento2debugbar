@@ -1,5 +1,5 @@
 {
-    "name": "yongchengchen/magento2debugbar",
+    "name": "yong/magento2debugbar",
     "description": "PHPDebugbar for Magento2",
     "type": "magento2-module",
     "authors": [
