@@ -1,6 +1,14 @@
 {
-    "name": "yong/magento2debugbar",
+    "name": "yongchengchen/magento2debugbar",
     "description": "PHPDebugbar for Magento2",
+    "type": "magento2-module",
+    "authors": [
+        {
+            "name": "Yongcheng Chen",
+            "email": "yongcheng.chen@live.com",
+            "role": "Lead Developer"
+        }
+    ],
     "require": {
         "php": "~5.6.0|7.0.2|~7.0.6",
         "magento/framework": "100.1.*",
@@ -8,7 +16,6 @@
         "filp/whoops": "^2.1",
         "twig/twig": "^1.24"
     },
-    "type": "magento2-module",
     "license": [
         "OSL-3.0",
         "AFL-3.0",
