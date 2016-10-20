@@ -30,7 +30,7 @@ It also provides config interface for easy dynamic extend your functionality.
 Require this package with composer:
 
 ```shell
-composer require Yong/magento2debugbar
+composer require yongchengchen/magento2debugbar
 ```
 
 After updating composer, add 'phpdebugbar' configuration to app/etc/env.php
