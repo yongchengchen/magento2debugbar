@@ -71,6 +71,8 @@ class Stand
                 $this->initConfig($objectManager);
                 if ($this->debugbar_enabled && !$this->debugbar_collect_suppressed) {
                     $this->_objectManager = new ObjectManager($objectManager);
+                    $cache = $this->_objectManager->get('Magento\Framework\App\Cache\StateInterface');
+                    $cache->setEnabled('full_page', false);
                 } else {
                     $this->_objectManager = $objectManager;
                 }
@@ -199,16 +201,7 @@ class Stand
     {
         try {
             $params = array_merge(['_secure' => $is_secure], $params);
-            $url    = $this->_objectManager->get('Magento\Framework\View\Asset\Repository')->getUrlWithParams($fileId, $params);
-            $parts  = explode('::', $fileId);
-            if (count($parts) == 2) {
-                $path_part       = '/' . str_replace('_', '/', $parts[0]) . '/';
-                $modulename_part = '/' . $parts[0] . '/';
-                if (stripos($url, $path_part) > 0 && strpos($url, $modulename_part) > 0) {
-                    return str_replace($modulename_part, '/', $url);
-                }
-            }
-            return $url;
+            return $this->_objectManager->get('Magento\Framework\View\Asset\Repository')->getUrlWithParams($fileId, $params);
         } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $this->_logger->critical($e);
             return $this->_getNotFoundUrl();

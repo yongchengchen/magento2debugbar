@@ -106,10 +106,7 @@ class Magento2Debugbar extends StandardDebugBar{
 
         $append = sprintf('<script type="text/javascript" src="%s"></script>
             %s %s',
-            Stand::getInstance()->getViewFileUrl(
-                Stand::getInstance()->isAdmin() ? 'jquery.js' : 'Magento_Luma::jquery.js',
-                [], 
-                true),
+            Stand::getInstance()->getViewFileUrl('jquery.js', [], true),
             $renderer->renderHead(),
             $renderer->render()
         );

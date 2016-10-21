@@ -38,11 +38,15 @@ class TemplateCollector extends TwigCollector {
         }
 
         $params['block'] = get_class($block);
+        if ($block instanceof \Magento\Framework\View\Element\AbstractBlock) {
+            $params['name'] = $block->getNameInLayout();
+            $params['child'] = implode(';', $block->getChildNames());
+        }
 
         $this->templates[] = array(
             'name' => $fileName,
             'param_count' => count($params),
-            'params' => $params,
+            'block' => $params,
             'type' => 'php',
         );
     }
