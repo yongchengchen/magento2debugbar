@@ -14,6 +14,7 @@ return [
             'Magento\Framework\View\TemplateEngine\Php' =>  'Yong\Magento2DebugBar\Framework\View\TemplateEngine\Php',
             'Magento\Framework\View\Layout\File\Collector\Aggregated' =>'Yong\Magento2DebugBar\Framework\View\Layout\File\Collector\Aggregated',
             'Magento\Framework\DB\Logger\Quiet' => 'Yong\Magento2DebugBar\Framework\DB\Logger\Output',
+            'Magento\Developer\Model\TemplateEngine\Plugin\DebugHints' => 'Yong\Magento2DebugBar\Plugin\DebugHints',
         ],
         'types'=>[
             
@@ -46,6 +47,18 @@ return [
                 ]
             ]
         ],
+        // 'Magento\Framework\View\TemplateEngineFactory' => 
+        // [
+        //     'plugins' => [
+        //         'm2debughints'=>[
+        //             'instance' => 'Yong\Magento2DebugBar\Plugin\DebugHints',
+        //             'sortOrder' => 5,
+        //             'methods' => [
+        //                 'create'=>[1]
+        //             ]
+        //         ]
+        //     ]
+        // ],
     ],
 
     'events' => 

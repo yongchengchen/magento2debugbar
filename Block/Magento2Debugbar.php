@@ -17,6 +17,7 @@ use Yong\Magento2DebugBar\Block\Collector\ModelCollector;
 use Yong\Magento2DebugBar\Block\Collector\ProfilerCollector;
 use Yong\Magento2DebugBar\Block\Collector\ControllerCollector;
 use Yong\Magento2DebugBar\Model\FilesystemStorage;
+use Yong\Magento2DebugBar\Plugin\DebugHints;
 
 class Magento2Debugbar extends StandardDebugBar{
     CONST OPENHANDLER_URL = '/phpdebugbar/openhandler/load';
@@ -105,11 +106,44 @@ class Magento2Debugbar extends StandardDebugBar{
         $renderer->setBindAjaxHandlerToXHR(true);
 
         $append = sprintf('<script type="text/javascript" src="%s"></script>
-            %s %s',
+            %s %s %s',
             Stand::getInstance()->getViewFileUrl('jquery.js', [], true),
             $renderer->renderHead(),
-            $renderer->render()
+            $renderer->render(),
+            $this->appendDebugHintsButton()
         );
         $response->appendBody($append);
+    }
+
+    private function appendDebugHintsButton() {
+        $cookieManager = Stand::getInstance()->ObjectManager()->get('Magento\Framework\Stdlib\CookieManagerInterface');
+        $showtemplateHints = ('true' == $cookieManager->getCookie(DebugHints::TEMPLATE_HINT));
+        $showBlockHints = ('true' == $cookieManager->getCookie(DebugHints::BLOCK_HINT));
+
+        $js = '<script>var LinkIndicator = PhpDebugBar.DebugBar.Indicator.extend({
+                tagName: "a",
+                render: function() {
+                    LinkIndicator.__super__.render.apply(this);
+                    this.bindAttr("href", function(href) {
+                        this.$el.attr("href", href);
+                    });
+                }
+            });
+            ';
+
+        $url = sprintf('/phpdebugbar/openhandler/load?op=debughint&action=%s&hintname=%s',
+            $showtemplateHints ? 'disable' : 'enable',
+            DebugHints::BLOCK_HINT);
+        $title = 'Toggle Block Hint';
+        $js .= "phpdebugbar.addIndicator('blockhint', new LinkIndicator({ href: '$url', title: '$title' }));";
+
+        $url = sprintf('/phpdebugbar/openhandler/load?op=debughint&action=%s&hintname=%s',
+            $showtemplateHints ? 'disable' : 'enable',
+            DebugHints::TEMPLATE_HINT);
+        $title = 'Toggle Template Hint';
+        $js .= "phpdebugbar.addIndicator('templatehint', new LinkIndicator({ href: '$url', title: '$title' }));";
+        $js .= '</script>';
+        
+        return $js;
     }
 }
