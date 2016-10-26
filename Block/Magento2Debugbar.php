@@ -132,7 +132,7 @@ class Magento2Debugbar extends StandardDebugBar{
             ';
 
         $url = sprintf('/phpdebugbar/openhandler/load?op=debughint&action=%s&hintname=%s',
-            $showtemplateHints ? 'disable' : 'enable',
+            $showBlockHints ? 'disable' : 'enable',
             DebugHints::BLOCK_HINT);
         $title = 'Toggle Block Hint';
         $js .= "phpdebugbar.addIndicator('blockhint', new LinkIndicator({ href: '$url', title: '$title' }));";
