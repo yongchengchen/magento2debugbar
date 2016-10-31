@@ -22,8 +22,8 @@ class Stand
     {
         if (isset($pair['name'])
             && isset($pair['value'])
-            && isset($__COOKIE[$pair['name']])
-            && $__COOKIE[$pair['name']] === $pair['value']) {
+            && isset($_COOKIE[$pair['name']])
+            && $_COOKIE[$pair['name']] === $pair['value']) {
             return true;
         }
         return false;
