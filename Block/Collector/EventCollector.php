@@ -10,30 +10,20 @@
 namespace Yong\Magento2DebugBar\Block\Collector;
 
 use DebugBar\DataCollector\TimeDataCollector;
-use Yong\Magento2DebugBar\Block\ValueExporter;
 
 class EventCollector extends TimeDataCollector
 {
     /** @var Dispatcher */
     protected $events;
 
-    /** @var ValueExporter */
-    protected $exporter;
-
     public function __construct()
     {
         parent::__construct();
-        $this->exporter = new ValueExporter();
     }
 
     public function addEvent($name, $starttime, $endtime, $data)
     {
-        $params = [];
-        foreach ($data as $key => $value) {
-            $params[$key] = $this->exporter->exportValue($value);
-        }
-
-        $this->addMeasure($name, $starttime, $endtime, $params);
+        $this->addMeasure($name, $starttime, $endtime, $this->getDataFormatter()->formatVar($data));
     }
 
     public function collect()

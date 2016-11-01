@@ -9,20 +9,17 @@
  */
 namespace Yong\Magento2DebugBar\Block\Collector;
 
-use DebugBar\DataCollector\TimeDataCollector;
-use DebugBar\Bridge\Twig\TwigCollector;
-use Yong\Magento2DebugBar\Block\ValueExporter;
+use DebugBar\DataCollector\RequestDataCollector;
 
-class TemplateCollector extends TwigCollector {
-	protected $templates = array();
+class TemplateCollector extends RequestDataCollector {
+    protected $templates = array();
     protected $collect_data;
 
     public function __construct($collectData = true)
     {
         $this->collect_data = $collectData;
-        $this->name = 'views';
+        $this->name = 'templates';
         $this->templates = array();
-        $this->exporter = new ValueExporter();
     }
 
     /**
@@ -32,35 +29,20 @@ class TemplateCollector extends TwigCollector {
      */
     public function addView($block, $fileName, $dictionary)
     {
-    	$params = array();
-        foreach ($dictionary as $key => $value) {
-            $params[$key] = $this->exporter->exportValue($value);
-        }
-
-        $params['block'] = get_class($block);
         if ($block instanceof \Magento\Framework\View\Element\AbstractBlock) {
-            $params['name'] = $block->getNameInLayout();
-            $params['child'] = implode(';', $block->getChildNames());
+	    $block_name = $block->getNameInLayout();
+            $dictionary['class'] = get_class($block);
+            $dictionary['template'] = $fileName;
+            $dictionary['children'] = $block->getChildNames();
+            $this->templates[$block_name] = $this->getDataFormatter()->formatVar($dictionary);
         }
-
-        $this->templates[] = array(
-            'name' => $fileName,
-            'param_count' => count($params),
-            'block' => $params,
-            'type' => 'php',
-        );
     }
 
     public function collect()
     {
-        $templates = $this->templates;
-
-        return array(
-            'nb_templates' => count($templates),
-            'templates' => $templates,
-        );
+        $this->templates['total_amount'] = count(array_keys($this->templates));
+        return $this->templates;
     }
-
 
     public function getName()
     {
@@ -72,14 +54,14 @@ class TemplateCollector extends TwigCollector {
         return array(
             'templates' => array(
                 'icon' => 'leaf',
-                'widget' => 'PhpDebugBar.Widgets.TemplatesWidget',
+                'widget' => 'PhpDebugBar.Widgets.VariableListWidget',
                 'map' => 'templates',
                 'default' => '[]'
             ),
             'templates:badge' => array(
-                'map' => 'templates.nb_templates',
-                'default' => 0
-            )
+                'map' => 'templates.total_amount',
+                'default' => 0,
+             ),
         );
     }
 }

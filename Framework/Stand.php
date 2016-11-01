@@ -72,6 +72,7 @@ class Stand
                 if ($this->debugbar_enabled && !$this->debugbar_collect_suppressed) {
                     $this->_objectManager = new ObjectManager($objectManager);
                     $cache = $this->_objectManager->get('Magento\Framework\App\Cache\StateInterface');
+                    $cache->setEnabled('layout', false);
                     $cache->setEnabled('full_page', false);
                 } else {
                     $this->_objectManager = $objectManager;
