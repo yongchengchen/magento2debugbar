@@ -9,54 +9,62 @@
  */
 namespace Yong\Magento2DebugBar\Framework;
 
-class ClassHijacker {
-	protected $_core;
-	public function __construct($original, $extra_param=null){
-	        $this->_core = $original;
-	}
+use Closure;
 
-	public function __call($method, $args)
-	{
-	    if (method_exists($this->_core, $method)) {
-	            return call_user_func_array(array($this->_core, $method), $args);
-	    }
-	}
+class ClassHijacker
+{
+    protected $_core;
+    protected static $binding_closures = [];
+    public function __construct($original, $extra_param = null)
+    {
+        $this->_core = $original;
+    }
 
-	/**
-	 * hijack into a object
-	 *
-	 * @param      object    $target              The target
-	 * @param      string    $property_name       The property name of the target
-	 * @param      mixed     $hijacker_name  	  The hijacker class name
-	 */
-	public static function hijack($target, $property_name, $hijacker_name, $extra_param=null) {
-			$reflection = new \ReflectionClass($target);
-			if (!$reflection->hasProperty($property_name)) {
-				return null;
-			}
-			
-			$property = $reflection->getProperty($property_name);
-			$property->setAccessible(true);
+    public function __call($method, $args)
+    {
+        if (method_exists($this->_core, $method)) {
+            return call_user_func_array(array($this->_core, $method), $args);
+        }
+    }
 
-			$new_property = $hijacker_name;
-			if (is_string($hijacker_name)) {
-				$new_property = new $hijacker_name($property->getValue($target), $extra_param);
-			} 
-			if (!is_object($new_property) && !is_array($new_property)) {
-				throw new \Exception("hijacker_name should be a class name or object or null", 1);
-			}
-			$property->setValue($target, $new_property);
-			return $new_property;
-	}
+    public static function injectPropertyAccessor($target)
+    {
+        $class_name = get_class($target);
+        if (!isset(self::$binding_closures[$class_name])) {
+            $accessor = function ($target, $property_name, $new_property = null) {
+                if ($new_property !== null) {
+                    $target->$property_name = $new_property;
+                }
+                return $target->$property_name;
+            };
 
-	public static function retrive_property($target, $property_name) {
-		$reflection = new \ReflectionClass($target);
-		$property = $reflection->getProperty($property_name);
-		$property->setAccessible(true);
-		return $property->getValue($target);
-	}
+            self::$binding_closures[$class_name] = Closure::bind($accessor, null, $class_name);
+        }
+        return self::$binding_closures[$class_name];
+    }
 
-	public function getOriginal() {
-		return $this->_core;
-	}
+    /**
+     * hijack into a object
+     *
+     * @param      object    $target              The target
+     * @param      string    $property_name       The property name of the target
+     * @param      mixed     $hijacker_name        The hijacker class name
+     */
+    public static function hijack($target, $property_name, $hijacker_name, $extra_param = null)
+    {
+        $new_property = $hijacker_name;
+        $accessor     = self::injectPropertyAccessor($target);
+        if (is_string($hijacker_name)) {
+            $new_property = new $hijacker_name($accessor($target, $property_name), $extra_param);
+        }
+        if (!is_object($new_property)) {
+            throw new \Exception("hijacker_name should be a class name or object or null", 1);
+        }
+        return $accessor($target, $property_name, $new_property);
+    }
+
+    public function getOriginal()
+    {
+        return $this->_core;
+    }
 }

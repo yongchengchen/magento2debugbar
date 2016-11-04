@@ -62,7 +62,7 @@ class Stand
      *
      * @param      Magento\Framework\ObjectManagerInterface  $objectManager
      *
-     * @return     Yong\Magento2DebugBar\Framework\ObjectManagerStand\ObjectManager
+     * @return     true if debugbar enabled otherwise false
      */
     public function InitObjectManagerHijacker(ObjectManagerInterface $objectManager = null)
     {
