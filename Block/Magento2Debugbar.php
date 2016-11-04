@@ -16,6 +16,7 @@ use Yong\Magento2DebugBar\Block\Collector\TemplateCollector;
 use Yong\Magento2DebugBar\Block\Collector\ModelCollector;
 use Yong\Magento2DebugBar\Block\Collector\ProfilerCollector;
 use Yong\Magento2DebugBar\Block\Collector\ControllerCollector;
+use Yong\Magento2DebugBar\Block\Collector\LayoutCollector;
 use Yong\Magento2DebugBar\Model\FilesystemStorage;
 use Yong\Magento2DebugBar\Plugin\DebugHints;
 
@@ -27,6 +28,7 @@ class Magento2Debugbar extends StandardDebugBar{
     private $modelCollector;
     private $profilerCollector;
     private $controllerCollector;
+    private $layoutCollector;
 
     public static function getInstance() {
         static $self;
@@ -55,6 +57,9 @@ class Magento2Debugbar extends StandardDebugBar{
         $this->controllerCollector = new ControllerCollector();
         $this->addCollector($this->controllerCollector);
 
+        $this->layoutCollector = new LayoutCollector();
+        $this->addCollector($this->layoutCollector);
+
         \Magento\Framework\Profiler::add($this->profilerCollector);
         \Magento\Framework\Profiler::start('magento');
         \Magento\Framework\Profiler::start('store.resolve');
@@ -70,6 +75,10 @@ class Magento2Debugbar extends StandardDebugBar{
 
     public function addView($block, $fileName, $dictionary) {
         $this->templateCollector->addView($block, $fileName, $dictionary);
+    }
+
+    public function addLayout($handleName, $fileName) {
+        $this->layoutCollector->addLayout($handleName, $fileName);
     }
 
     public function addModel($name, $params) {

@@ -15,6 +15,7 @@ return [
             'Magento\Framework\View\Layout\File\Collector\Aggregated' =>'Yong\Magento2DebugBar\Framework\View\Layout\File\Collector\Aggregated',
             'Magento\Framework\DB\Logger\Quiet' => 'Yong\Magento2DebugBar\Framework\DB\Logger\Output',
             'Magento\Developer\Model\TemplateEngine\Plugin\DebugHints' => 'Yong\Magento2DebugBar\Plugin\DebugHints',
+            'Magento\Framework\View\Model\Layout\Merge' => 'Yong\Magento2DebugBar\Framework\View\Model\Layout\Merge',
         ],
         'types'=>[
             
@@ -47,6 +48,20 @@ return [
                 ]
             ]
         ],
+/*
+	'Magento\Framework\View\Model\Layout\Merge' =>
+        [
+            'plugins' => [
+                'layoutcollect'=>[
+                    'instance' => 'Yong\Magento2DebugBar\Plugin\LayoutMerge',
+                    'sortOrder' => 5,
+                    'methods' => [
+                        'addHandle'=>[1]
+                        ]
+                ]
+            ]
+        ],
+*/
         // 'Magento\Framework\View\TemplateEngineFactory' => 
         // [
         //     'plugins' => [
