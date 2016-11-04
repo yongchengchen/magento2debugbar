@@ -59,24 +59,6 @@ and then run
 bin/magento module:enable Yong_Magento2DebugBar
 ```
 
-
-# The next step is not have to do, but if you don't add this line, it may lost something to collect(when app starts up)
-Then go to pub/index.php file, insert a line 
-```php
-$bootstrap = new \Yong\Magento2DebugBar\Framework\App\Bootstrap($bootstrap);
-```
-before 
-```php
-$app = $bootstrap->createApplication('Magento\Framework\App\Http');
-```
-then the code looks like:
-```php
-$bootstrap = \Magento\Framework\App\Bootstrap::create(BP, $params);
-/** @var \Magento\Framework\App\Http $app */
-$bootstrap = new \Yong\Magento2DebugBar\Framework\App\Bootstrap($bootstrap);
-$app = $bootstrap->createApplication('Magento\Framework\App\Http');
-```
-
 ## Usage
 Enable/Disable: go to file app/etc/env.php, set 'enabled' of array phpdebugbar as 0 for disable, 1 for enable(but still need cookie pair check)
 
