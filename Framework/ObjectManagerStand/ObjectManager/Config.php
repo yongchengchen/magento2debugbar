@@ -21,12 +21,32 @@ class Config extends ClassHijacker {
             $config = Stand::getInstance()->getInjectConfig();
             if (isset($config['overrides'])) {
                 $this->overrides = $config['overrides'];
+                if(!isset($this->overrides['arguments_from'])) {
+                    $this->overrides['arguments_from'] = [];
+                }
             } else {
-                $this->overrides = ['preferences'=>[], 'types'=>[]];
+                $this->overrides = ['preferences'=>[], 'types'=>[], 'arguments_from'=>[]];
             }
         }
 
-        return isset($this->overrides['preferences'][$type]) ? $this->overrides['preferences'][$type] : $type;
+        $alternative = isset($this->overrides['preferences'][$type]) ? $this->overrides['preferences'][$type] : $type;
+        $this->getOverrideArguments($alternative, $type);
+        return $alternative;
+    }
+
+    private function getOverrideArguments($override_type, $original_type = false) {
+        if (isset($this->overrides['arguments_from'][$override_type])) {
+            $result = $this->overrides['arguments_from'][$override_type];
+            if ($original_type && $result != $original_type) {
+                $this->overrides['arguments_from'][$override_type] = $original_type;
+            }
+            return $this->overrides['arguments_from'][$override_type];
+        }
+
+        if ($original_type && $override_type != $original_type) {
+            $this->overrides['arguments_from'][$override_type] = $original_type;
+        }
+        return $override_type;
     }
 
     /**
@@ -40,7 +60,7 @@ class Config extends ClassHijacker {
         if (isset($this->overrides['types'][$type])) {
             return $this->overrides['types'][$type];
         }
-      
+        $type = $this->getOverrideArguments($type);
         return $this->_core->getArguments($type);
     }
     

@@ -16,6 +16,9 @@ return [
             'Magento\Framework\DB\Logger\Quiet' => 'Yong\Magento2DebugBar\Framework\DB\Logger\Output',
             'Magento\Developer\Model\TemplateEngine\Plugin\DebugHints' => 'Yong\Magento2DebugBar\Plugin\DebugHints',
             'Magento\Framework\View\Model\Layout\Merge' => 'Yong\Magento2DebugBar\Framework\View\Model\Layout\Merge',
+            'Magento\Framework\App\Router\Base' => 'Yong\Magento2DebugBar\Framework\App\Router\Base',
+            'Magento\Framework\App\Router\ActionList' => 'Yong\Magento2DebugBar\Framework\App\Router\ActionList',
+            'Magento\Backend\App\Router'=>'Yong\Magento2DebugBar\Backend\App\Router',
         ],
         'types'=>[
             
