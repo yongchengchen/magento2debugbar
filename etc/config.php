@@ -19,6 +19,7 @@ return [
             'Magento\Framework\App\Router\Base' => 'Yong\Magento2DebugBar\Framework\App\Router\Base',
             'Magento\Framework\App\Router\ActionList' => 'Yong\Magento2DebugBar\Framework\App\Router\ActionList',
             'Magento\Backend\App\Router'=>'Yong\Magento2DebugBar\Backend\App\Router',
+            'Magento\Developer\Model\TemplateEngine\Decorator\DebugHints'=>'Yong\Magento2DebugBar\Model\Developer\TemplateEngine\Decorator\DebugHints',
         ],
         'types'=>[
             
